@@ -1,6 +1,8 @@
 class MyStringDriver{
 	public static void main(String[] args) {
-
+		MyString str = new MyString("123#chair");
+		// System.out.println(str.charAt(6));
+		System.out.println(str.codePointBefore(0));
 		
 
 		// MyString str = new MyString("kk");
@@ -44,14 +46,14 @@ final class MyString{
 		this(sb.toString());
 	}
 	public MyString(StringBuilder sb){
-		this(sb.toString());
+		arr = new char[sb.length()];
+		for(int i=0;i<arr.length;i++)
+			arr[i] = sb.charAt(i);
 	}
 	public MyString(char[] arr){
-		this.arr = new char[arr.length];
-		for(int i=0;i<arr.length;i++)
-			this.arr[i] = arr[i];
+		this.arr = arr.clone();
 	}
-	public MyString(char[] arr, int start, int count){
+	public MyString(char[] arr, int start, int count){			// used to create String from a character array, where the start points to the first element to be added in the string and count denotes the number of elements to be added in the string from the char [] array.
 		if((start + count)>arr.length)
 			throw new MyStringIndexOutOfBoundsException 
 			("INVALID["+start+","+start+"+"+count+ "] out of bounds for lenght "+ arr.length);
@@ -75,13 +77,14 @@ final class MyString{
 	public boolean isEmpty(){
 		return arr.length==0;
 	}
-	public char charAt(int indx){
+	public char charAt(int indx){	
 		if(indx<0 || indx>=arr.length)
 			throw new MyStringIndexOutOfBoundsException ("Index "+indx+" out of bounds for length"+arr.length);
 		return arr[indx];
 	}
 
-	public int codePointAt(int indx){
+	public int codePointAt(int indx){		// in this method we're returning the element at the index indx, but the return type of method is int, so the element is getting typecasted to int rather than char, so that's why it's returing the UNICODE or ASCII value.
+		System.out.println("From MyString class");
 		if(indx<0 || indx >= arr.length)
 			throw new MyStringIndexOutOfBoundsException
 			("Index "+indx+" out of bounds for length "+arr.length);
@@ -100,17 +103,21 @@ final class MyString{
 	public MyString toUpperCase(){
 		char[] newArr = new char[arr.length];
 
-		for(int i=0;i<newArr.length;i++){
-			char ch = arr[i];
-			newArr[i] = (ch>=97 && ch<=122) ? (char)(ch-32) : ch;
+		for(int i=0;i<arr.length;i++){
+			if(arr[i]>=97 && arr[i]<=122)
+				newArr[i] = (char)(arr[i]-32);
+			else
+				newArr[i] = arr[i];
 		}
 		return new MyString(newArr);
 	}
 	public MyString toLowerCase(){
 		char[] newArr = new char[arr.length];
-		for(int i=0;i<newArr.length;i++){
-			char ch = arr[i];
-			newArr[i] = (ch>=65 && ch<=90) ? (char)(ch+32) : ch;
+		for(int i=0;i<arr.length;i++){
+			if(arr[i]>=65 && arr[i]<=90)
+				newArr[i] = (char)(arr[i]+32);
+			else
+				newArr[i] = arr[i];
 		}
 		return new MyString(newArr);
 	}
