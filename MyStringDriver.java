@@ -1,30 +1,53 @@
 import java.util.Arrays;
 class MyStringDriver{
 	public static void main(String[] args) {
-		String str = new String("khagesh");
-		char[] chars = str.toCharArray();
-		System.out.println(Arrays.toString(chars)); 
+		String str1 = new String("hello java");
+		MyString str2 = new MyString("hello javaa");
+		System.out.println(Arrays.toString(str1.split("h")));
+		System.out.println(Arrays.toString(str2.split(new MyString("h"))));
 
-		MyString str1 = new MyString("khagesh");
-		char[] chars1 = str1.toCharArray();
-		System.out.println(Arrays.toString(chars1));
+
+		// MyString str = new MyString("hello java");
+		// char ch [] = str.toCharArray();
+		// System.out.println(Arrays.toString(ch));
+
+ 		// String str1 = new String("hello javaa");
+ 		// char ch1 [] = str1.toCharArray();
+ 		// System.out.println(Arrays.toString(ch1));
+		// MyString s1 = new MyString("hello hie");
+		// System.out.println(s1.contains(new MyString(" hie")));
+
+
+		// String s1 = new String("hello hie");
+		// System.out.println(s1.lastIndexOf("e"));
+
+		// MyString s2 = new MyString("hello hie");
+		// System.out.println(s2.indexOf('l'));
+		// System.out.println(s2.lastIndexOf(new MyString("l")));
+		// String str = new String("khagesh");
+		// char[] chars = str.toCharArray();
+		// System.out.println(Arrays.toString(chars)); 
+
+		// MyString str1 = new MyString("khagesh");
+		// char[] chars1 = str1.toCharArray();
+		// System.out.println(Arrays.toString(chars1));
 
 
 
 
 
 		// String s1 = new String("hello  how  are you");
-		// System.out.println(Arrays.toString(s1.split("h")));
+		// System.out.println(Arrays.toString(s1.split(" ")));
 
 		// MyString s2 = new MyString("hello  how  are you");
-		// System.out.println(Arrays.toString(s2.split(new MyString("h"))));
+		// System.out.println(Arrays.toString(s2.split(new MyString(" "))));
 
 
 		// String s1 = new String("hello heie");
 		// System.out.println(s1.replaceAll("he","ye"));
 
 		// MyString s2 = new MyString("hello heie");
-		// System.out.println(s2.replaceAll(new MyString("he"),new MyString("ye")));
+		// System.out.println(s2.replaceAll(new MyString("h"),new MyString("y")));
 
 		// String s1 = new String("hello hie");
 		// System.out.println(s1.substring(2,9));
@@ -227,7 +250,22 @@ final class MyString{
 		}
 		return -1;
 	}
-
+	public int lastIndexOf(MyString subStr) {
+	    if (subStr == null || subStr.length() == 0 || subStr.length() > this.length()) {
+	        return -1;
+	    }
+	    for (int i = this.length() - subStr.length(); i >= 0; i--) {
+	        boolean found = true;
+	        for (int j = 0; j < subStr.length(); j++) {
+	            if (this.arr[i + j] != subStr.arr[j]) {
+	                found = false;
+	                break;
+	            }
+	        }
+	        if (found) return i;
+	    }
+	    return -1;
+	}
 	public MyString concat(MyString merge){
 		char [] newArr = new char[arr.length+merge.length()];
 		int indx = 0;
@@ -289,6 +327,19 @@ final class MyString{
 
 		return new MyString(newArr);
 	}
+	public MyString replaceFirst(char oldChar, char newChar)
+	{
+		char[] newArr = arr.clone();
+		for(int i=0;i<arr.length;i++){
+			if(newArr[i]==oldChar){
+				newArr[i]=newChar;
+				return new MyString(newArr);
+			}
+		}
+		return new MyString(arr);
+
+	}
+
 
 	public MyString substring(int start, int end){
 		if(start > end || start<0||end<0||end>arr.length)
@@ -320,7 +371,6 @@ final class MyString{
 		int count = 0;
 		for(int i=0;i<arr.length;i++)
 			if(arr[i]==regex.charAt(0)) count++;
-
 		MyString [] newArr = new MyString[count+1];
 		int indx = 0;
 
@@ -338,15 +388,16 @@ final class MyString{
 		return newArr;
 	}
 
+	// works for spaces only
 	public MyString replaceAll(MyString searchStr, MyString repStr){
 		MyString [] newArr = new MyString(arr).split(new MyString (" "));
-		System.out.println(Arrays.toString(newArr));
 		MyString op = new MyString("");
 		int indx = 0;
 		for(MyString ele : newArr){
-			if(ele.equals(searchStr))
+			if(ele.equals(searchStr)){
+				System.out.println("am executing");
 				newArr[indx] = repStr;
-
+			}
 			op = op.concat(new MyString(newArr[indx++]+" "));
 		}
 		return op.trim();
@@ -358,26 +409,22 @@ final class MyString{
 	    }
     	return copy;
 	}	
+
+	public boolean contains(MyString subStr) {
+	    if (subStr == null || subStr.length() == 0 || subStr.length() > this.length()) {
+	        return false;
+	    }
+	    for (int i = 0; i <= this.length() - subStr.length(); i++) {
+	        boolean match = true;
+	        for (int j = 0; j < subStr.length(); j++) {
+	            if (this.arr[i + j] != subStr.arr[j]) {
+	                match = false;
+	                break;
+	            }
+	        }
+	        if (match) return true;
+	    }
+	    return false;
+	}
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// lastIndexOf
-// lastIndexOf
-// contains
-// replaceFirst
-// split
-// toCharArray
-// intern
